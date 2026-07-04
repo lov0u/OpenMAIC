@@ -1,0 +1,17 @@
+providers:
+  openai:
+    apiKey: wk-i3zUAGFZGv5Xipwo3lC9MCLsS3fF7AN3ZFRTdarAvCycMy9j
+    baseUrl: https://apihub.agnes-ai.com/v1
+    models: ["agnes-2.0-flash"]
+
+image:
+  openai-image:
+    apiKey: wk-i3zUAGFZGv5Xipwo3lC9MCLsS3fF7AN3ZFRTdarAvCycMy9j
+    baseUrl: https://apihub.agnes-ai.com/v1
+    models: ["agnes-image-2.1-flash"]
+
+video:
+  openai-video:
+    apiKey: wk-i3zUAGFZGv5Xipwo3lC9MCLsS3fF7AN3ZFRTdarAvCycMy9j
+    baseUrl: https://apihub.agnes-ai.com/v1
+    models: ["agnes-video-v2.0"]

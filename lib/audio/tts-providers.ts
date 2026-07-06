@@ -280,22 +280,57 @@ async function generateEdgeTTS(
   config: TTSModelConfig,
   text: string,
 ): Promise<TTSGenerationResult> {
-  const { MsEdgeTTS, OUTPUT_FORMAT } = await import('msedge-tts');
+  const WebSocket = (await import('ws')).default;
   const voice = config.voice || 'zh-CN-XiaoxiaoNeural';
   const speed = config.speed || 1.0;
   const rate = speed >= 1 ? `+${Math.round((speed - 1) * 100)}%` : `-${Math.round((1 - speed) * 100)}%`;
+  const outputFormat = 'audio-24khz-48kbitrate-mono-mp3';
 
-  const tts = new MsEdgeTTS();
-  await tts.setMetadata(voice, OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3);
-  const { audioStream } = tts.toStream(text, { rate });
+  const trustToken = '6A5AA1D4EAFF4E9FB37E23D68491D6F4';
+  const wssUrl = `wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1?TrustedClientToken=${trustToken}&ConnectionId=${crypto.randomUUID()}`;
 
-  const chunks: Buffer[] = [];
-  for await (const chunk of audioStream) {
-    chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
-  }
-  const audio = Buffer.concat(chunks);
+  return new Promise((resolve, reject) => {
+    const ws = new WebSocket(wssUrl);
+    const chunks: Buffer[] = [];
+    let resolved = false;
 
-  return { audio: new Uint8Array(audio), format: 'mp3' };
+    ws.on('open', () => {
+      const configMsg = `Content-Type:application/json; charset=utf-8\r\nPath:speech.config\r\n\r\n{"context":{"synthesis":{"audio":{"metadataOptions":{"sentenceBoundaryEnabled":"false","wordBoundaryEnabled":"false"},"outputFormat":"${outputFormat}"}}}}`;
+      ws.send(configMsg);
+
+      const requestId = crypto.randomUUID();
+      const ssml = `<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='zh-CN'><voice name='${voice}'><prosody pitch='+0Hz' rate='${rate}' volume='+0%'>${text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</prosody></voice></speak>`;
+      const msg = `X-RequestId:${requestId}\r\nContent-Type:application/ssml+xml\r\nX-Timestamp:${new Date().toISOString()}\r\nPath:ssml\r\n\r\n${ssml}`;
+      ws.send(msg);
+    });
+
+    ws.on('message', (data: Buffer, isBinary: boolean) => {
+      if (isBinary) {
+        const arr = new Uint8Array(data);
+        const headerLen = arr[0] + (arr[1] << 8) - 2;
+        chunks.push(Buffer.from(arr.slice(headerLen)));
+      } else {
+        const str = data.toString();
+        if (str.includes('Path:turn.end')) {
+          resolved = true;
+          ws.close();
+          resolve({ audio: Buffer.concat(chunks), format: 'mp3' });
+        }
+      }
+    });
+
+    ws.on('error', (err) => {
+      if (!resolved) reject(err);
+    });
+
+    ws.on('close', () => {
+      if (!resolved && chunks.length > 0) {
+        resolve({ audio: Buffer.concat(chunks), format: 'mp3' });
+      } else if (!resolved) {
+        reject(new Error('Edge TTS connection closed without response'));
+      }
+    });
+  });
 }
 
 /**

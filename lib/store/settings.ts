@@ -1792,6 +1792,25 @@ export const useSettingsStore = create<SettingsState>()(
                   videoGenerationEnabled: autoVideoEnabled,
                 }),
                 ...(autoTtsEnabled !== undefined && { ttsEnabled: autoTtsEnabled }),
+                // Force-select first server-configured LLM provider if current
+                // one is not usable (e.g. empty API key on first visit).
+                ...((() => {
+                  const currentCfg = newProvidersConfig[state.providerId as ProviderId];
+                  const isCurrentUsable = currentCfg && isLLMProviderConfigured(currentCfg);
+                  if (isCurrentUsable) return {};
+                  const serverFirst = Object.entries(newProvidersConfig).find(
+                    ([, c]) => c.isServerConfigured,
+                  );
+                  if (serverFirst) {
+                    const pid = serverFirst[0] as ProviderId;
+                    const models = serverFirst[1].models ?? [];
+                    return {
+                      providerId: pid,
+                      modelId: models[0]?.id ?? state.modelId,
+                    };
+                  }
+                  return {};
+                })()),
               };
             });
           } catch (e) {
@@ -1813,6 +1832,11 @@ export const useSettingsStore = create<SettingsState>()(
           if (state.providerId === 'openai' && state.modelId === 'gpt-4o-mini') {
             state.modelId = '';
           }
+        }
+
+        // v4 → v5: force re-auto-select so server-managed providers are adopted
+        if (version <= 4) {
+          (state as Record<string, unknown>).autoConfigApplied = false;
         }
 
         // v4 → v5: force auto-config to re-run so server-managed providers

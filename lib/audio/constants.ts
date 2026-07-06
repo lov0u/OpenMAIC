@@ -944,6 +944,29 @@ export const TTS_PROVIDERS: Record<BuiltInTTSProviderId, TTSProviderConfig> = {
     speedRange: { min: 0.1, max: 10.0, default: 1.0 },
   },
 
+  'edge-tts': {
+    id: 'edge-tts',
+    name: 'Edge TTS (免费)',
+    requiresApiKey: false,
+    icon: '/logos/azure.svg',
+    models: [{ id: 'edge-tts', name: 'Edge TTS' }],
+    defaultModelId: 'edge-tts',
+    voices: [
+      { id: 'zh-CN-XiaoxiaoNeural', name: '晓晓 (女)', language: 'zh-CN', gender: 'female' },
+      { id: 'zh-CN-YunxiNeural', name: '云希 (男)', language: 'zh-CN', gender: 'male' },
+      { id: 'zh-CN-YunjianNeural', name: '云健 (男)', language: 'zh-CN', gender: 'male' },
+      { id: 'zh-CN-XiaoyiNeural', name: '晓艺 (女)', language: 'zh-CN', gender: 'female' },
+      { id: 'zh-CN-YunyangNeural', name: '云扬 (男)', language: 'zh-CN', gender: 'male' },
+      { id: 'zh-CN-XiaohanNeural', name: '晓涵 (女)', language: 'zh-CN', gender: 'female' },
+      { id: 'zh-CN-XiaomengNeural', name: '晓梦 (女)', language: 'zh-CN', gender: 'female' },
+      { id: 'zh-CN-YunzeNeural', name: '云泽 (男)', language: 'zh-CN', gender: 'male' },
+      { id: 'en-US-JennyNeural', name: 'Jenny (Female)', language: 'en-US', gender: 'female' },
+      { id: 'en-US-GuyNeural', name: 'Guy (Male)', language: 'en-US', gender: 'male' },
+    ],
+    supportedFormats: ['mp3', 'wav'],
+    speedRange: { min: 0.5, max: 2.0, default: 1.0 },
+  },
+
   'lemonade-tts': {
     id: 'lemonade-tts',
     name: 'Lemonade TTS',
@@ -1283,6 +1306,7 @@ export const DEFAULT_TTS_VOICES: Record<BuiltInTTSProviderId, string> = {
   'elevenlabs-tts': 'EXAVITQu4vr4xnSDxMaL',
   'minimax-tts': 'female-yujie',
   'lemonade-tts': 'af_heart',
+  'edge-tts': 'zh-CN-XiaoxiaoNeural',
   'browser-native-tts': 'default',
 };
 
@@ -1296,6 +1320,7 @@ export const DEFAULT_TTS_MODELS: Record<BuiltInTTSProviderId, string> = {
   'elevenlabs-tts': 'eleven_multilingual_v2',
   'minimax-tts': 'speech-2.8-hd',
   'lemonade-tts': 'kokoro-v1',
+  'edge-tts': 'edge-tts',
   'browser-native-tts': '',
 };
 

@@ -179,6 +179,9 @@ export async function generateTTS(
     case 'lemonade-tts':
       return await generateLemonadeTTS(config, text);
 
+    case 'edge-tts':
+      return await generateEdgeTTS(config, text);
+
     case 'browser-native-tts':
       throw new Error(
         'Browser Native TTS must be handled client-side using Web Speech API. This provider cannot be used on the server.',
@@ -271,6 +274,24 @@ async function generateLemonadeTTS(
     audio: new Uint8Array(arrayBuffer),
     format: getAudioResponseFormat(contentType),
   };
+}
+
+async function generateEdgeTTS(
+  config: TTSModelConfig,
+  text: string,
+): Promise<TTSGenerationResult> {
+  const { EdgeTTS } = await import('msedge-tts');
+  const voice = config.voice || 'zh-CN-XiaoxiaoNeural';
+  const speed = config.speed || 1.0;
+  const speedPercent = Math.round((speed - 1) * 100);
+  const rate = speedPercent >= 0 ? `+${speedPercent}%` : `${speedPercent}%`;
+
+  const tts = new EdgeTTS();
+  await tts.synthesize(text, voice, { rate });
+  const audio = tts.toBuffer();
+  const format = config.format || 'mp3';
+
+  return { audio: new Uint8Array(audio), format };
 }
 
 /**

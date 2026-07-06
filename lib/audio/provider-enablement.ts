@@ -62,6 +62,8 @@ export function isTTSProviderConfigured(
 ): boolean {
   // Browser-native runs in-browser; it never needs a credential path.
   if (providerId === BROWSER_NATIVE_TTS_PROVIDER_ID) return true;
+  // Edge TTS is free and needs no API key.
+  if (providerId === 'edge-tts') return true;
   if (!config) return false;
   if (config.isServerConfigured) return true;
 

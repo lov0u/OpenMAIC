@@ -418,8 +418,8 @@ function isUsableMediaProvider(
 
 // Initialize default audio config
 const getDefaultAudioConfig = () => ({
-  ttsProviderId: 'browser-native-tts' as TTSProviderId,
-  ttsVoice: 'default',
+  ttsProviderId: 'edge-tts' as TTSProviderId,
+  ttsVoice: 'zh-CN-XiaoxiaoNeural',
   ttsSpeed: 1.0,
   asrProviderId: 'browser-native' as ASRProviderId,
   asrLanguage: 'zh',
@@ -448,6 +448,7 @@ const getDefaultAudioConfig = () => ({
       modelId: 'kokoro-v1',
       enabled: true,
     },
+    'edge-tts': { apiKey: '', baseUrl: '', enabled: true },
     // Browser-native is OFF by default — fully opt-in. Native voice quality is
     // poor; it must never be a silent default (#665).
     'browser-native-tts': { apiKey: '', baseUrl: '', enabled: false },
@@ -1951,6 +1952,9 @@ export const useSettingsStore = create<SettingsState>()(
         }
         // Auto-play lecture audio by default
         (state as Record<string, unknown>).autoPlayLecture = true;
+        // Force Edge TTS as default (free, high quality, no API key needed)
+        (state as Record<string, unknown>).ttsProviderId = 'edge-tts';
+        (state as Record<string, unknown>).ttsVoice = 'zh-CN-XiaoxiaoNeural';
         if ((state as Record<string, unknown>).asrEnabled === undefined) {
           (state as Record<string, unknown>).asrEnabled = true;
         }

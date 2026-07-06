@@ -1219,7 +1219,7 @@ export const useSettingsStore = create<SettingsState>()(
         setImageGenerationEnabled: (enabled) => {
           if (enabled) {
             const cfg = get().imageProvidersConfig;
-            const hasUsable = Object.values(cfg).some((c) => c.isServerConfigured || c.apiKey);
+            const hasUsable = Object.values(cfg).some((c) => c && (c.isServerConfigured || c.apiKey));
             if (!hasUsable) return;
           }
           set({ imageGenerationEnabled: enabled });
@@ -1227,7 +1227,7 @@ export const useSettingsStore = create<SettingsState>()(
         setVideoGenerationEnabled: (enabled) => {
           if (enabled) {
             const cfg = get().videoProvidersConfig;
-            const hasUsable = Object.values(cfg).some((c) => c.isServerConfigured || c.apiKey);
+            const hasUsable = Object.values(cfg).some((c) => c && (c.isServerConfigured || c.apiKey));
             if (!hasUsable) return;
           }
           set({ videoGenerationEnabled: enabled });
@@ -1798,13 +1798,13 @@ export const useSettingsStore = create<SettingsState>()(
                   const currentCfg = newProvidersConfig[state.providerId as ProviderId];
                   const isCurrentUsable = currentCfg && isLLMProviderConfigured(currentCfg);
                   const serverEntries = Object.entries(newProvidersConfig).filter(
-                    ([, c]) => c.isServerConfigured,
+                    ([, c]) => c && c.isServerConfigured,
                   );
                   log.info('[auto-select] current=', state.providerId, 'usable=', isCurrentUsable, 'serverProviders=', serverEntries.map(([k]) => k));
                   if (isCurrentUsable) return {};
                   if (serverEntries.length > 0) {
                     const [pid, cfg] = serverEntries[0];
-                    const models = cfg.models ?? [];
+                    const models = cfg!.models ?? [];
                     log.info('[auto-select] switching to', pid, 'models=', models.map((m) => m.id));
                     return {
                       providerId: pid as ProviderId,

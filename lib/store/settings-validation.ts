@@ -108,6 +108,7 @@ export interface LLMProviderCfgLike {
  * Always also requires ≥1 model.
  */
 export function isLLMProviderConfigured(config: LLMProviderCfgLike): boolean {
+  if (!config) return false;
   if (!config.models || config.models.length < 1) return false;
   if (config.isServerConfigured) return true;
   if (config.requiresApiKey === false) return !!config.baseUrl;

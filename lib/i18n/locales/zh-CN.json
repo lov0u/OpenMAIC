@@ -6,7 +6,7 @@
     "loading": "加载中..."
   },
   "home": {
-    "slogan": "Generative Learning in Multi-Agent Interactive Classroom",
+    "slogan": "AI 智能课堂 — 输入任何主题，自动生成互动教学课程 | ai.ra0.cn",
     "greetingWithName": "嗨，{{name}}"
   },
   "toolbar": {

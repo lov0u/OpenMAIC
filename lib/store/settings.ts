@@ -896,7 +896,7 @@ export const useSettingsStore = create<SettingsState>()(
         // TTS is OFF by default; auto-enabled on first server-sync when a TTS
         // provider is configured (mirrors image/video). Fresh installs with no
         // provider stay off and show an "enable browser-native" CTA (#665).
-        ttsEnabled: false,
+        ttsEnabled: true,
         asrEnabled: true,
 
         // Off until the server reports a concurrency via fetchServerProviders.
@@ -1910,16 +1910,15 @@ export const useSettingsStore = create<SettingsState>()(
         // Add default audio toggles if missing. TTS defaults OFF (opt-in / CTA);
         // first server-sync auto-enables it when a provider is configured (#665).
         if ((state as Record<string, unknown>).ttsEnabled === undefined) {
-          (state as Record<string, unknown>).ttsEnabled = false;
+          (state as Record<string, unknown>).ttsEnabled = true;
         }
         if ((state as Record<string, unknown>).asrEnabled === undefined) {
           (state as Record<string, unknown>).asrEnabled = true;
         }
 
-        // Existing users already have their config set up — mark auto-config as done
-        if ((state as Record<string, unknown>).autoConfigApplied === undefined) {
-          (state as Record<string, unknown>).autoConfigApplied = true;
-        }
+        // Force auto-config to re-run so server-managed providers (e.g. AGNES-AI)
+        // are always auto-selected on page load — no manual setup needed.
+        (state as Record<string, unknown>).autoConfigApplied = false;
 
         if ((state as Record<string, unknown>).agentMode === undefined) {
           (state as Record<string, unknown>).agentMode = 'preset';

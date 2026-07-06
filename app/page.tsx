@@ -521,15 +521,39 @@ function HomePage() {
           className="h-12 md:h-16 mb-2 -ml-2 md:-ml-3"
         />
 
-        {/* ── Slogan ── */}
-        <motion.p
+        {/* ── Slogan + Promo ── */}
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.25 }}
-          className="text-sm text-muted-foreground/60 mb-8"
+          className="mb-8 flex flex-col items-center gap-3"
         >
-          {t('home.slogan')}
-        </motion.p>
+          <p className="text-sm text-muted-foreground/60">
+            {t('home.slogan')}
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground/50">
+            <span className="inline-flex items-center gap-1 rounded-full bg-violet-500/10 px-3 py-1 text-violet-600 dark:text-violet-400">
+              <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+              AI 驱动
+            </span>
+            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-3 py-1 text-emerald-600 dark:text-emerald-400">
+              <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+              多模态课堂
+            </span>
+            <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-3 py-1 text-amber-600 dark:text-amber-400">
+              <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+              视频生成
+            </span>
+            <a
+              href="https://ra0.cn"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 px-3 py-1 text-violet-600 dark:text-violet-300 font-medium hover:from-violet-500/30 hover:to-fuchsia-500/30 transition-all"
+            >
+              更多功能 → ra0.cn
+            </a>
+          </div>
+        </motion.div>
 
         {/* ── Unified input area ── */}
         <motion.div
@@ -905,9 +929,34 @@ function HomePage() {
         </motion.div>
       )}
 
-      {/* Footer — flows with content, at the very end */}
-      <div className="mt-auto pt-12 pb-4 text-center text-xs text-muted-foreground/40">
-        OpenMAIC Open Source Project
+      {/* Footer */}
+      <div className="mt-auto pt-12 pb-6 text-center text-xs text-muted-foreground/40">
+        <div className="flex flex-col items-center gap-1.5">
+          <div className="flex items-center gap-2">
+            <span>Powered by</span>
+            <a
+              href="https://agnes-ai.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-muted-foreground/60 hover:text-violet-500 transition-colors"
+            >
+              AGNES-AI
+            </a>
+            <span className="text-muted-foreground/20">·</span>
+            <span>Built by</span>
+            <a
+              href="https://ra0.cn"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-muted-foreground/60 hover:text-violet-500 transition-colors"
+            >
+              ra0.cn
+            </a>
+          </div>
+          <p className="text-muted-foreground/30">
+            Based on <a href="https://github.com/lov0u/OpenMAIC" target="_blank" rel="noopener noreferrer" className="hover:text-muted-foreground/60 transition-colors">OpenMAIC</a> open source project
+          </p>
+        </div>
       </div>
     </div>
   );

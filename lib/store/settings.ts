@@ -1803,7 +1803,7 @@ export const useSettingsStore = create<SettingsState>()(
     },
     {
       name: 'settings-storage',
-      version: 4,
+      version: 5,
       // Migrate persisted state
       migrate: (persistedState: unknown, version: number) => {
         const state = persistedState as Partial<SettingsState>;
@@ -1813,6 +1813,12 @@ export const useSettingsStore = create<SettingsState>()(
           if (state.providerId === 'openai' && state.modelId === 'gpt-4o-mini') {
             state.modelId = '';
           }
+        }
+
+        // v4 → v5: force auto-config to re-run so server-managed providers
+        // (e.g. AGNES-AI) are auto-selected without manual setup.
+        if (version <= 4) {
+          (state as Record<string, unknown>).autoConfigApplied = false;
         }
 
         // Ensure providersConfig has all built-in providers (also in merge below)

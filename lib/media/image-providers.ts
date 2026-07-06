@@ -140,7 +140,7 @@ export const IMAGE_PROVIDERS: Record<ImageProviderId, ImageProviderConfig> = {
   },
   'agnes-image': {
     id: 'agnes-image',
-    name: 'AGNES-AI Image',
+    name: 'Agnes Image',
     requiresApiKey: true,
     defaultBaseUrl: 'https://apihub.agnes-ai.com/v1',
     icon: '/logos/agnes-ai.svg',

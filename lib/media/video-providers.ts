@@ -134,7 +134,7 @@ export const VIDEO_PROVIDERS: Record<VideoProviderId, VideoProviderConfig> = {
   },
   'agnes-video': {
     id: 'agnes-video',
-    name: 'AGNES-AI Video',
+    name: 'Agnes Video',
     requiresApiKey: true,
     defaultBaseUrl: 'https://apihub.agnes-ai.com/v1',
     models: [{ id: 'agnes-video-v2.0', name: 'Agnes Video v2.0' }],

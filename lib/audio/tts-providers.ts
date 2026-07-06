@@ -291,9 +291,20 @@ async function generateEdgeTTS(
   const wssUrl = `wss://speech.platform.bing.com/consumer/speech/synthesize/readaloud/edge/v1?TrustedClientToken=${trustToken}&ConnectionId=${connId}`;
 
   return new Promise((resolve, reject) => {
-    const ws = new WebSocket(wssUrl);
+    const ws = new WebSocket(wssUrl, {
+      headers: {
+        'Origin': 'chrome-extension://jdiccldimpdaibmpdkjnbmckianbfold',
+      },
+    });
     const chunks: Buffer[] = [];
     let resolved = false;
+    const timeout = setTimeout(() => {
+      if (!resolved) {
+        resolved = true;
+        ws.close();
+        reject(new Error('Edge TTS timeout'));
+      }
+    }, 30000);
 
     ws.on('open', () => {
       const configMsg = `Content-Type:application/json; charset=utf-8\r\nPath:speech.config\r\n\r\n{"context":{"synthesis":{"audio":{"metadataOptions":{"sentenceBoundaryEnabled":"false","wordBoundaryEnabled":"false"},"outputFormat":"${outputFormat}"}}}}`;
@@ -317,6 +328,7 @@ async function generateEdgeTTS(
         const str = data.toString();
         if (str.includes('Path:turn.end')) {
           resolved = true;
+          clearTimeout(timeout);
           ws.close();
           resolve({ audio: Buffer.concat(chunks), format: 'mp3' });
         }
@@ -324,14 +336,22 @@ async function generateEdgeTTS(
     });
 
     ws.on('error', (err: Error) => {
-      if (!resolved) reject(err);
+      if (!resolved) {
+        resolved = true;
+        clearTimeout(timeout);
+        reject(err);
+      }
     });
 
     ws.on('close', () => {
-      if (!resolved && chunks.length > 0) {
-        resolve({ audio: Buffer.concat(chunks), format: 'mp3' });
-      } else if (!resolved) {
-        reject(new Error('Edge TTS connection closed without response'));
+      if (!resolved) {
+        resolved = true;
+        clearTimeout(timeout);
+        if (chunks.length > 0) {
+          resolve({ audio: Buffer.concat(chunks), format: 'mp3' });
+        } else {
+          reject(new Error('Edge TTS connection closed without response'));
+        }
       }
     });
   });

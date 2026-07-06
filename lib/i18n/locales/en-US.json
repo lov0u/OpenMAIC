@@ -6,7 +6,7 @@
     "loading": "Loading..."
   },
   "home": {
-    "slogan": "AI-Powered Interactive Learning — Any Topic, Auto-Generated Lessons | ai.ra0.cn",
+    "slogan": "AI-Powered Interactive Learning — Any Topic, Auto-Generated Lessons",
     "greetingWithName": "Hi, {{name}}"
   },
   "toolbar": {

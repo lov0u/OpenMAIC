@@ -6,7 +6,7 @@
     "loading": "Carregando..."
   },
   "home": {
-    "slogan": "Aprendizado Interativo com IA — Qualquer Tópico, Aulas Automáticas | ai.ra0.cn",
+    "slogan": "Aprendizado Interativo com IA — Qualquer Tópico, Aulas Automáticas",
     "greetingWithName": "Olá, {{name}}"
   },
   "toolbar": {

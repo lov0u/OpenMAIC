@@ -6,7 +6,7 @@
     "loading": "読み込み中..."
   },
   "home": {
-    "slogan": "AI インタラクティブ学習 — あらゆるトピックで自動レッスン生成 | ai.ra0.cn",
+    "slogan": "AI インタラクティブ学習 — あらゆるトピックで自動レッスン生成",
     "greetingWithName": "こんにちは、{{name}}さん"
   },
   "toolbar": {

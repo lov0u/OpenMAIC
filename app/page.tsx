@@ -550,7 +550,7 @@ function HomePage() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 px-3 py-1 text-violet-600 dark:text-violet-300 font-medium hover:from-violet-500/30 hover:to-fuchsia-500/30 transition-all"
             >
-              探索更多 → ra0.cn
+              网站开发：ra0.cn
             </a>
           </div>
         </motion.div>

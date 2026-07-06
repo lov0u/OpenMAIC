@@ -2040,6 +2040,8 @@ export const useSettingsStore = create<SettingsState>()(
         ensureBuiltInWebSearchProviders(merged as Partial<SettingsState>);
         ensureValidProviderSelections(merged as Partial<SettingsState>);
         stripLegacyServerBaseUrl(merged as Partial<SettingsState>);
+        // Force auto-config re-run so server-managed providers are always adopted
+        (merged as Record<string, unknown>).autoConfigApplied = false;
         const typedMerged = merged as Partial<SettingsState>;
         typedMerged.thinkingConfigs = pruneThinkingConfigs(
           typedMerged.thinkingConfigs,

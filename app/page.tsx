@@ -933,17 +933,7 @@ function HomePage() {
       <div className="mt-auto pt-12 pb-6 text-center text-xs text-muted-foreground/40">
         <div className="flex flex-col items-center gap-1.5">
           <div className="flex items-center gap-2">
-            <span>Powered by</span>
-            <a
-              href="https://agnes-ai.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-muted-foreground/60 hover:text-violet-500 transition-colors"
-            >
-              AGNES-AI
-            </a>
-            <span className="text-muted-foreground/20">·</span>
-            <span>Built by</span>
+            <span>由</span>
             <a
               href="https://ra0.cn"
               target="_blank"
@@ -952,10 +942,12 @@ function HomePage() {
             >
               ra0.cn
             </a>
+            <span>提供技术支持 · 基于</span>
+            <a href="https://github.com/lov0u/OpenMAIC" target="_blank" rel="noopener noreferrer" className="hover:text-muted-foreground/60 transition-colors">
+              OpenMAIC
+            </a>
+            <span>开源项目构建</span>
           </div>
-          <p className="text-muted-foreground/30">
-            Based on <a href="https://github.com/lov0u/OpenMAIC" target="_blank" rel="noopener noreferrer" className="hover:text-muted-foreground/60 transition-colors">OpenMAIC</a> open source project
-          </p>
         </div>
       </div>
     </div>

@@ -280,18 +280,22 @@ async function generateEdgeTTS(
   config: TTSModelConfig,
   text: string,
 ): Promise<TTSGenerationResult> {
-  const { EdgeTTS } = await import('msedge-tts');
+  const { MsEdgeTTS, OUTPUT_FORMAT } = await import('msedge-tts');
   const voice = config.voice || 'zh-CN-XiaoxiaoNeural';
   const speed = config.speed || 1.0;
-  const speedPercent = Math.round((speed - 1) * 100);
-  const rate = speedPercent >= 0 ? `+${speedPercent}%` : `${speedPercent}%`;
+  const rate = speed >= 1 ? `+${Math.round((speed - 1) * 100)}%` : `-${Math.round((1 - speed) * 100)}%`;
 
-  const tts = new EdgeTTS();
-  await tts.synthesize(text, voice, { rate });
-  const audio = tts.toBuffer();
-  const format = config.format || 'mp3';
+  const tts = new MsEdgeTTS();
+  await tts.setMetadata(voice, OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3);
+  const { audioStream } = tts.toStream(text, { rate });
 
-  return { audio: new Uint8Array(audio), format };
+  const chunks: Buffer[] = [];
+  for await (const chunk of audioStream) {
+    chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+  }
+  const audio = Buffer.concat(chunks);
+
+  return { audio: new Uint8Array(audio), format: 'mp3' };
 }
 
 /**

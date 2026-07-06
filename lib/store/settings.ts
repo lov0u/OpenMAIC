@@ -1797,15 +1797,17 @@ export const useSettingsStore = create<SettingsState>()(
                 ...((() => {
                   const currentCfg = newProvidersConfig[state.providerId as ProviderId];
                   const isCurrentUsable = currentCfg && isLLMProviderConfigured(currentCfg);
-                  if (isCurrentUsable) return {};
-                  const serverFirst = Object.entries(newProvidersConfig).find(
+                  const serverEntries = Object.entries(newProvidersConfig).filter(
                     ([, c]) => c.isServerConfigured,
                   );
-                  if (serverFirst) {
-                    const pid = serverFirst[0] as ProviderId;
-                    const models = serverFirst[1].models ?? [];
+                  log.info('[auto-select] current=', state.providerId, 'usable=', isCurrentUsable, 'serverProviders=', serverEntries.map(([k]) => k));
+                  if (isCurrentUsable) return {};
+                  if (serverEntries.length > 0) {
+                    const [pid, cfg] = serverEntries[0];
+                    const models = cfg.models ?? [];
+                    log.info('[auto-select] switching to', pid, 'models=', models.map((m) => m.id));
                     return {
-                      providerId: pid,
+                      providerId: pid as ProviderId,
                       modelId: models[0]?.id ?? state.modelId,
                     };
                   }
@@ -1813,6 +1815,9 @@ export const useSettingsStore = create<SettingsState>()(
                 })()),
               };
             });
+            // Debug: verify state after update
+            const afterState = get();
+            log.info('[auto-select] after set: providerId=', afterState.providerId, 'modelId=', afterState.modelId, 'agnesServerConfigured=', afterState.providersConfig['agnes-ai']?.isServerConfigured);
           } catch (e) {
             // Silently fail — server providers are optional
             log.warn('Failed to fetch server providers:', e);

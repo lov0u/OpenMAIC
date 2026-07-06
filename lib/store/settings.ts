@@ -865,7 +865,7 @@ export const useSettingsStore = create<SettingsState>()(
         // Playback controls
         ttsMuted: false,
         ttsVolume: 1,
-        autoPlayLecture: false,
+        autoPlayLecture: true,
         playbackSpeed: 1,
 
         // Layout preferences
@@ -1947,6 +1947,8 @@ export const useSettingsStore = create<SettingsState>()(
         if ((state as Record<string, unknown>).ttsEnabled === undefined) {
           (state as Record<string, unknown>).ttsEnabled = true;
         }
+        // Auto-play lecture audio by default
+        (state as Record<string, unknown>).autoPlayLecture = true;
         if ((state as Record<string, unknown>).asrEnabled === undefined) {
           (state as Record<string, unknown>).asrEnabled = true;
         }

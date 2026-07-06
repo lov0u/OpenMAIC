@@ -177,6 +177,7 @@ const IMAGE_PROVIDER_NAMES: Record<ImageProviderId, string> = {
   'minimax-image': 'providerMiniMaxImage',
   'grok-image': 'providerGrokImage',
   lemonade: 'providerLemonadeImage',
+  'agnes-image': 'providerAgnesImage',
 };
 
 const IMAGE_PROVIDER_ICONS: Record<ImageProviderId, string> = {
@@ -187,6 +188,7 @@ const IMAGE_PROVIDER_ICONS: Record<ImageProviderId, string> = {
   'minimax-image': '/logos/minimax.svg',
   'grok-image': '/logos/grok.svg',
   lemonade: '/logos/lemonade.svg',
+  'agnes-image': '/logos/agnes-ai.svg',
 };
 
 const VIDEO_PROVIDER_NAMES: Record<VideoProviderId, string> = {
@@ -197,6 +199,7 @@ const VIDEO_PROVIDER_NAMES: Record<VideoProviderId, string> = {
   'minimax-video': 'providerMiniMaxVideo',
   'grok-video': 'providerGrokVideo',
   happyhorse: 'providerHappyHorse',
+  'agnes-video': 'providerAgnesVideo',
 };
 
 const VIDEO_PROVIDER_ICONS: Record<VideoProviderId, string> = {
@@ -207,6 +210,7 @@ const VIDEO_PROVIDER_ICONS: Record<VideoProviderId, string> = {
   'minimax-video': '/logos/minimax.svg',
   'grok-video': '/logos/grok.svg',
   happyhorse: '/logos/qwen.svg',
+  'agnes-video': '/logos/agnes-ai.svg',
 };
 
 interface SettingsDialogProps {

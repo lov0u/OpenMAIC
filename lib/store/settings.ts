@@ -2051,6 +2051,17 @@ export const useSettingsStore = create<SettingsState>()(
         stripLegacyServerBaseUrl(merged as Partial<SettingsState>);
         // Force auto-config re-run so server-managed providers are always adopted
         (merged as Record<string, unknown>).autoConfigApplied = false;
+        // Force image/video to Agnes when available in config
+        const imgCfg = (merged as SettingsState).imageProvidersConfig;
+        if (imgCfg && imgCfg['agnes-image']) {
+          (merged as Record<string, unknown>).imageProviderId = 'agnes-image';
+          (merged as Record<string, unknown>).imageModelId = 'agnes-image-2.1-flash';
+        }
+        const vidCfg = (merged as SettingsState).videoProvidersConfig;
+        if (vidCfg && vidCfg['agnes-video']) {
+          (merged as Record<string, unknown>).videoProviderId = 'agnes-video';
+          (merged as Record<string, unknown>).videoModelId = 'agnes-video-v2.0';
+        }
         const typedMerged = merged as Partial<SettingsState>;
         typedMerged.thinkingConfigs = pruneThinkingConfigs(
           typedMerged.thinkingConfigs,
